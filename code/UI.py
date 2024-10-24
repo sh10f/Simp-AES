@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
-import numpy as np
+import time
 
-from utils import strToBytes, bytesToStr
-from Cipher import S_DES
-
-# Form implementation generated from reading ui file 'UI.ui'
+# Form implementation generated from reading ui file 'test2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -16,223 +13,167 @@ from Cipher import S_DES
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication
 
+import numpy as np
+
+from Cipher import S_AES
+from utils import hexToBytes, bytesToHex, bytesToStr, strToBytes
+
 
 class Ui_MainWindow(object):
-    def __init__(self):
-        self.machine = None
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(781, 643)
+        MainWindow.resize(845, 650)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 771, 631))
+        self.tabWidget.setGeometry(QtCore.QRect(10, 10, 781, 581))
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtWidgets.QWidget()
-        self.tab.setEnabled(True)
         self.tab.setObjectName("tab")
-        self.p1_textEdit = QtWidgets.QTextEdit(self.tab)
-        self.p1_textEdit.setGeometry(QtCore.QRect(200, 83, 431, 101))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.p1_textEdit.setFont(font)
-        self.p1_textEdit.setObjectName("p1_textEdit")
-        self.p1_label = QtWidgets.QLabel(self.tab)
-        self.p1_label.setGeometry(QtCore.QRect(80, 103, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.p1_label.setFont(font)
-        self.p1_label.setObjectName("p1_label")
-        self.key1_label_2 = QtWidgets.QLabel(self.tab)
-        self.key1_label_2.setGeometry(QtCore.QRect(130, 253, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.key1_label_2.setFont(font)
-        self.key1_label_2.setObjectName("key1_label_2")
-        self.k1_textEdit_2 = QtWidgets.QTextEdit(self.tab)
-        self.k1_textEdit_2.setGeometry(QtCore.QRect(200, 263, 431, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.k1_textEdit_2.setFont(font)
-        self.k1_textEdit_2.setObjectName("k1_textEdit_2")
+        self.label = QtWidgets.QLabel(self.tab)
+        self.label.setGeometry(QtCore.QRect(30, 30, 111, 51))
+        self.label.setObjectName("label")
+        self.textEdit = QtWidgets.QTextEdit(self.tab)
+        self.textEdit.setGeometry(QtCore.QRect(170, 40, 371, 91))
+        self.textEdit.setObjectName("textEdit")
+        self.textEdit_2 = QtWidgets.QTextEdit(self.tab)
+        self.textEdit_2.setGeometry(QtCore.QRect(170, 240, 371, 91))
+        self.textEdit_2.setObjectName("textEdit_2")
+        self.label_4 = QtWidgets.QLabel(self.tab)
+        self.label_4.setGeometry(QtCore.QRect(60, 260, 111, 51))
+        self.label_4.setObjectName("label_4")
+        self.label_5 = QtWidgets.QLabel(self.tab)
+        self.label_5.setGeometry(QtCore.QRect(50, 390, 111, 51))
+        self.label_5.setObjectName("label_5")
+        self.textEdit_3 = QtWidgets.QTextEdit(self.tab)
+        self.textEdit_3.setGeometry(QtCore.QRect(170, 380, 371, 91))
+        self.textEdit_3.setObjectName("textEdit_3")
+        self.pushButton = QtWidgets.QPushButton(self.tab)
+        self.pushButton.setGeometry(QtCore.QRect(160, 500, 91, 31))
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QtWidgets.QPushButton(self.tab)
+        self.pushButton_2.setGeometry(QtCore.QRect(400, 500, 91, 31))
+        self.pushButton_2.setObjectName("pushButton_2")
         self.radioButton = QtWidgets.QRadioButton(self.tab)
-        self.radioButton.setGeometry(QtCore.QRect(200, 213, 115, 19))
-        font = QtGui.QFont()
-        font.setFamily("AcadEref")
-        font.setPointSize(12)
-        self.radioButton.setFont(font)
+        self.radioButton.setGeometry(QtCore.QRect(150, 180, 86, 21))
         self.radioButton.setObjectName("radioButton")
         self.radioButton_2 = QtWidgets.QRadioButton(self.tab)
-        self.radioButton_2.setGeometry(QtCore.QRect(510, 213, 115, 19))
-        font = QtGui.QFont()
-        font.setFamily("AcadEref")
-        font.setPointSize(12)
-        self.radioButton_2.setFont(font)
+        self.radioButton_2.setGeometry(QtCore.QRect(350, 180, 86, 21))
         self.radioButton_2.setObjectName("radioButton_2")
-        self.c1_textEdit_3 = QtWidgets.QTextEdit(self.tab)
-        self.c1_textEdit_3.setEnabled(False)
-        self.c1_textEdit_3.setGeometry(QtCore.QRect(200, 363, 431, 101))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.c1_textEdit_3.setFont(font)
-        self.c1_textEdit_3.setObjectName("c1_textEdit_3")
-        self.c1_label_3 = QtWidgets.QLabel(self.tab)
-        self.c1_label_3.setGeometry(QtCore.QRect(70, 383, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.c1_label_3.setFont(font)
-        self.c1_label_3.setObjectName("c1_label_3")
-        self.e_pushButton = QtWidgets.QPushButton(self.tab)
-        self.e_pushButton.setGeometry(QtCore.QRect(350, 480, 121, 51))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.e_pushButton.setFont(font)
-        self.e_pushButton.setObjectName("e_pushButton")
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.label_6 = QtWidgets.QLabel(self.tab_2)
-        self.label_6.setGeometry(QtCore.QRect(80, 103, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.label_6.setFont(font)
+        self.label_6.setGeometry(QtCore.QRect(30, 50, 81, 41))
         self.label_6.setObjectName("label_6")
-        self.c2_textEdit_4 = QtWidgets.QTextEdit(self.tab_2)
-        self.c2_textEdit_4.setGeometry(QtCore.QRect(200, 83, 431, 101))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.c2_textEdit_4.setFont(font)
-        self.c2_textEdit_4.setObjectName("c2_textEdit_4")
+        self.textEdit_4 = QtWidgets.QTextEdit(self.tab_2)
+        self.textEdit_4.setGeometry(QtCore.QRect(110, 50, 271, 131))
+        self.textEdit_4.setObjectName("textEdit_4")
+        self.label_7 = QtWidgets.QLabel(self.tab_2)
+        self.label_7.setGeometry(QtCore.QRect(450, 50, 41, 41))
+        self.label_7.setObjectName("label_7")
+        self.textEdit_5 = QtWidgets.QTextEdit(self.tab_2)
+        self.textEdit_5.setGeometry(QtCore.QRect(500, 50, 271, 131))
+        self.textEdit_5.setObjectName("textEdit_5")
+        self.label_10 = QtWidgets.QLabel(self.tab_2)
+        self.label_10.setGeometry(QtCore.QRect(10, 280, 101, 41))
+        self.label_10.setObjectName("label_10")
+        self.label_11 = QtWidgets.QLabel(self.tab_2)
+        self.label_11.setGeometry(QtCore.QRect(400, 280, 91, 41))
+        self.label_11.setObjectName("label_11")
+        self.textEdit_6 = QtWidgets.QTextEdit(self.tab_2)
+        self.textEdit_6.setGeometry(QtCore.QRect(110, 290, 271, 41))
+        self.textEdit_6.setObjectName("textEdit_6")
+        self.textEdit_7 = QtWidgets.QTextEdit(self.tab_2)
+        self.textEdit_7.setGeometry(QtCore.QRect(500, 290, 271, 41))
+        self.textEdit_7.setObjectName("textEdit_7")
+        self.label_12 = QtWidgets.QLabel(self.tab_2)
+        self.label_12.setGeometry(QtCore.QRect(10, 380, 101, 41))
+        self.label_12.setObjectName("label_12")
+        self.textEdit_8 = QtWidgets.QTextEdit(self.tab_2)
+        self.textEdit_8.setGeometry(QtCore.QRect(90, 390, 531, 91))
+        self.textEdit_8.setObjectName("textEdit_8")
+        self.pushButton_3 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_3.setGeometry(QtCore.QRect(150, 510, 101, 31))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_4 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_4.setGeometry(QtCore.QRect(400, 510, 101, 31))
+        self.pushButton_4.setObjectName("pushButton_4")
         self.radioButton_3 = QtWidgets.QRadioButton(self.tab_2)
-        self.radioButton_3.setGeometry(QtCore.QRect(200, 213, 115, 19))
-        font = QtGui.QFont()
-        font.setFamily("AcadEref")
-        font.setPointSize(12)
-        self.radioButton_3.setFont(font)
+        self.radioButton_3.setGeometry(QtCore.QRect(110, 210, 86, 21))
         self.radioButton_3.setObjectName("radioButton_3")
-        self.label_5 = QtWidgets.QLabel(self.tab_2)
-        self.label_5.setGeometry(QtCore.QRect(130, 253, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.label_5.setFont(font)
-        self.label_5.setObjectName("label_5")
-        self.d_pushButton_2 = QtWidgets.QPushButton(self.tab_2)
-        self.d_pushButton_2.setGeometry(QtCore.QRect(350, 480, 121, 51))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.d_pushButton_2.setFont(font)
-        self.d_pushButton_2.setObjectName("d_pushButton_2")
         self.radioButton_4 = QtWidgets.QRadioButton(self.tab_2)
-        self.radioButton_4.setGeometry(QtCore.QRect(510, 213, 115, 19))
-        font = QtGui.QFont()
-        font.setFamily("AcadEref")
-        font.setPointSize(12)
-        self.radioButton_4.setFont(font)
+        self.radioButton_4.setGeometry(QtCore.QRect(380, 210, 86, 21))
         self.radioButton_4.setObjectName("radioButton_4")
-        self.p2_textEdit_6 = QtWidgets.QTextEdit(self.tab_2)
-        self.p2_textEdit_6.setEnabled(False)
-        self.p2_textEdit_6.setGeometry(QtCore.QRect(200, 363, 431, 101))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.p2_textEdit_6.setFont(font)
-        self.p2_textEdit_6.setObjectName("p2_textEdit_6")
-        self.k2_textEdit_5 = QtWidgets.QTextEdit(self.tab_2)
-        self.k2_textEdit_5.setGeometry(QtCore.QRect(200, 263, 431, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.k2_textEdit_5.setFont(font)
-        self.k2_textEdit_5.setObjectName("k2_textEdit_5")
-        self.label_4 = QtWidgets.QLabel(self.tab_2)
-        self.label_4.setGeometry(QtCore.QRect(70, 383, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
-        self.p3_textEdit_7 = QtWidgets.QTextEdit(self.tab_3)
-        self.p3_textEdit_7.setGeometry(QtCore.QRect(200, 80, 431, 101))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.p3_textEdit_7.setFont(font)
-        self.p3_textEdit_7.setObjectName("p3_textEdit_7")
-        self.c3_textEdit_8 = QtWidgets.QTextEdit(self.tab_3)
-        self.c3_textEdit_8.setEnabled(True)
-        self.c3_textEdit_8.setGeometry(QtCore.QRect(200, 250, 431, 101))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.c3_textEdit_8.setFont(font)
-        self.c3_textEdit_8.setObjectName("c3_textEdit_8")
-        self.label_7 = QtWidgets.QLabel(self.tab_3)
-        self.label_7.setGeometry(QtCore.QRect(70, 270, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.label_7.setFont(font)
-        self.label_7.setObjectName("label_7")
-        self.label_9 = QtWidgets.QLabel(self.tab_3)
-        self.label_9.setGeometry(QtCore.QRect(80, 100, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.label_9.setFont(font)
-        self.label_9.setObjectName("label_9")
-        self.radioButton_5 = QtWidgets.QRadioButton(self.tab_3)
-        self.radioButton_5.setGeometry(QtCore.QRect(510, 380, 115, 19))
-        font = QtGui.QFont()
-        font.setFamily("AcadEref")
-        font.setPointSize(12)
-        self.radioButton_5.setFont(font)
-        self.radioButton_5.setObjectName("radioButton_5")
-        self.radioButton_6 = QtWidgets.QRadioButton(self.tab_3)
-        self.radioButton_6.setGeometry(QtCore.QRect(200, 380, 115, 19))
-        font = QtGui.QFont()
-        font.setFamily("AcadEref")
-        font.setPointSize(12)
-        self.radioButton_6.setFont(font)
-        self.radioButton_6.setObjectName("radioButton_6")
-        self.bf_pushButton_3 = QtWidgets.QPushButton(self.tab_3)
-        self.bf_pushButton_3.setGeometry(QtCore.QRect(340, 540, 121, 51))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.bf_pushButton_3.setFont(font)
-        self.bf_pushButton_3.setObjectName("bf_pushButton_3")
-        self.label_8 = QtWidgets.QLabel(self.tab_3)
-        self.label_8.setGeometry(QtCore.QRect(120, 420, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        self.label_8.setFont(font)
-        self.label_8.setObjectName("label_8")
-        self.k3_textEdit_9 = QtWidgets.QTextEdit(self.tab_3)
-        self.k3_textEdit_9.setEnabled(False)
-        self.k3_textEdit_9.setGeometry(QtCore.QRect(200, 430, 431, 91))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.k3_textEdit_9.setFont(font)
-        self.k3_textEdit_9.setObjectName("k3_textEdit_9")
+        self.pushButton_5 = QtWidgets.QPushButton(self.tab_3)
+        self.pushButton_5.setGeometry(QtCore.QRect(300, 500, 121, 41))
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.label_13 = QtWidgets.QLabel(self.tab_3)
+        self.label_13.setGeometry(QtCore.QRect(30, 30, 61, 41))
+        self.label_13.setObjectName("label_13")
+        self.textEdit_9 = QtWidgets.QTextEdit(self.tab_3)
+        self.textEdit_9.setGeometry(QtCore.QRect(120, 30, 561, 171))
+        self.textEdit_9.setObjectName("textEdit_9")
+        self.label_14 = QtWidgets.QLabel(self.tab_3)
+        self.label_14.setGeometry(QtCore.QRect(30, 220, 61, 41))
+        self.label_14.setObjectName("label_14")
+        self.textEdit_10 = QtWidgets.QTextEdit(self.tab_3)
+        self.textEdit_10.setGeometry(QtCore.QRect(120, 230, 561, 141))
+        self.textEdit_10.setObjectName("textEdit_10")
+        self.label_15 = QtWidgets.QLabel(self.tab_3)
+        self.label_15.setGeometry(QtCore.QRect(30, 390, 61, 41))
+        self.label_15.setObjectName("label_15")
+        self.textEdit_11 = QtWidgets.QTextEdit(self.tab_3)
+        self.textEdit_11.setGeometry(QtCore.QRect(120, 390, 561, 91))
+        self.textEdit_11.setObjectName("textEdit_11")
         self.tabWidget.addTab(self.tab_3, "")
+        self.tab_4 = QtWidgets.QWidget()
+        self.tab_4.setObjectName("tab_4")
+        self.label_16 = QtWidgets.QLabel(self.tab_4)
+        self.label_16.setGeometry(QtCore.QRect(20, 40, 71, 20))
+        self.label_16.setObjectName("label_16")
+        self.textEdit_12 = QtWidgets.QTextEdit(self.tab_4)
+        self.textEdit_12.setGeometry(QtCore.QRect(100, 40, 551, 121))
+        self.textEdit_12.setObjectName("textEdit_12")
+        self.textEdit_13 = QtWidgets.QTextEdit(self.tab_4)
+        self.textEdit_13.setGeometry(QtCore.QRect(100, 240, 551, 31))
+        self.textEdit_13.setObjectName("textEdit_13")
+        self.textEdit_14 = QtWidgets.QTextEdit(self.tab_4)
+        self.textEdit_14.setGeometry(QtCore.QRect(100, 290, 551, 71))
+        self.textEdit_14.setObjectName("textEdit_14")
+        self.textEdit_15 = QtWidgets.QTextEdit(self.tab_4)
+        self.textEdit_15.setGeometry(QtCore.QRect(100, 370, 551, 91))
+        self.textEdit_15.setObjectName("textEdit_15")
+        self.label_19 = QtWidgets.QLabel(self.tab_4)
+        self.label_19.setGeometry(QtCore.QRect(60, 240, 31, 20))
+        self.label_19.setObjectName("label_19")
+        self.label_20 = QtWidgets.QLabel(self.tab_4)
+        self.label_20.setGeometry(QtCore.QRect(50, 300, 41, 20))
+        self.label_20.setObjectName("label_20")
+        self.label_21 = QtWidgets.QLabel(self.tab_4)
+        self.label_21.setGeometry(QtCore.QRect(20, 380, 71, 20))
+        self.label_21.setObjectName("label_21")
+        self.pushButton_6 = QtWidgets.QPushButton(self.tab_4)
+        self.pushButton_6.setGeometry(QtCore.QRect(150, 480, 91, 31))
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.pushButton_7 = QtWidgets.QPushButton(self.tab_4)
+        self.pushButton_7.setGeometry(QtCore.QRect(440, 480, 91, 31))
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.radioButton_5 = QtWidgets.QRadioButton(self.tab_4)
+        self.radioButton_5.setGeometry(QtCore.QRect(140, 190, 86, 21))
+        self.radioButton_5.setObjectName("radioButton_5")
+        self.radioButton_6 = QtWidgets.QRadioButton(self.tab_4)
+        self.radioButton_6.setGeometry(QtCore.QRect(400, 190, 86, 21))
+        self.radioButton_6.setObjectName("radioButton_6")
+        self.tabWidget.addTab(self.tab_4, "")
         MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 845, 22))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
@@ -241,40 +182,124 @@ class Ui_MainWindow(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-############################################################################################
-        self.machine = S_DES()
-        self.e_pushButton.clicked.connect(self.encrypt_text)  # 为加密按钮绑定点击事件
-        self.d_pushButton_2.clicked.connect(self.decrypt_text)
-        self.bf_pushButton_3.clicked.connect(self.bf_text)
+        self.AES = S_AES()
+        self.pushButton.clicked.connect(self.encrypt)
+        self.pushButton_2.clicked.connect(self.decrypt)
+        self.pushButton_3.clicked.connect(self.multiEncrypt)
+        self.pushButton_4.clicked.connect(self.multiDecrypt)
 
-    def encrypt_text(self):
-        isBinary = None
+        self.pushButton_5.clicked.connect(self.attack)
+        self.pushButton_6.clicked.connect(self.cbcEncrypt)
+        self.pushButton_7.clicked.connect(self.cbcDecrypt)
 
-        if self.radioButton.isChecked():
+    def cbcEncrypt(self):
+        isBinary = True
+
+        if self.radioButton_5.isChecked():
             isBinary = True
 
-        if self.radioButton_2.isChecked():
+        if self.radioButton_6.isChecked():
             isBinary = False
 
-        print(isBinary)
-        # 获取输入的明文
-        plain_text = self.p1_textEdit.toPlainText()
-        key_text = self.k1_textEdit_2.toPlainText()  # 固定加密密钥
+        message_o = self.textEdit_12.toPlainText()
+        if isBinary:
+            message = hexToBytes(message_o)
+        else:
+            message = strToBytes(message_o, isBinary)
+        print("message: ", message)
 
-        print("plain: ", plain_text)
+        IV_o = self.textEdit_13.toPlainText()
+        IV = hexToBytes(IV_o)
+        print("IV: ", IV)
 
-        x = strToBytes(plain_text, isBinary)
-        key = strToBytes(key_text, isBinary)
+        key_o = self.textEdit_14.toPlainText()
+        key = hexToBytes(key_o)
+        print("key: ", key)
 
-        c = self.machine.forward(x, key, isEncrypt=True)
-        cipher_text = bytesToStr(c, isBinary)
-        print("c: ", cipher_text)
-        # 将加密后的内容显示在密文文本框中
-        self.c1_textEdit_3.setPlainText(cipher_text)
-        self.c1_textEdit_3.setEnabled(True)
+        target = self.AES.cbc(message, IV, key, isForward=True)
+        print("target: ", target)
 
-    def decrypt_text(self):
-        isBinary = None
+        result = "Plain: " + bytesToStr(message, isBinary) + " -- " + message_o + "\n"
+        result += "IV: " + bytesToStr(IV, True) + " -- " + IV_o + "\n"
+        result += "Key: " + bytesToStr(key, True) + " -- " + key_o + "\n"
+        if isBinary:
+            result += "Cipher: " + bytesToStr(target, isBinary) + " -- " + bytesToHex(target) + "\n"
+        else:
+            result += "Cipher: " + bytesToStr(target, isBinary) + " -- " + bytesToStr(target, isBinary) + "\n"
+        self.textEdit_15.setPlainText(result)
+        self.textEdit_15.setEnabled(True)
+
+    def cbcDecrypt(self):
+        isBinary = True
+
+        if self.radioButton_5.isChecked():
+            isBinary = True
+
+        if self.radioButton_6.isChecked():
+            isBinary = False
+
+        message_o = self.textEdit_12.toPlainText()
+        if isBinary:
+            message = hexToBytes(message_o)
+        else:
+            message = strToBytes(message_o, isBinary)
+        print("message: ", message)
+
+        IV_o = self.textEdit_13.toPlainText()
+        IV = hexToBytes(IV_o)
+        print("IV: ", IV)
+
+        key_o = self.textEdit_14.toPlainText()
+        key = hexToBytes(key_o)
+        print("key: ", key)
+
+        target = self.AES.cbc(message, IV, key, isForward=False)
+        print("target: ", target)
+
+        result = "Plain: " + bytesToStr(message, isBinary) + " -- " + message_o + "\n"
+        result += "IV: " + bytesToStr(IV, True) + " -- " + IV_o + "\n"
+        result += "Key: " + bytesToStr(key, True) + " -- " + key_o + "\n"
+        if isBinary:
+            result += "Cipher: " + bytesToStr(target, isBinary) + " -- " + bytesToHex(target) + "\n"
+        else:
+            result += "Ciphler: " + bytesToStr(target, isBinary) + " -- " + bytesToStr(target, isBinary) + "\n"
+        self.textEdit_15.setPlainText(result)
+        self.textEdit_15.setEnabled(True)
+
+    def attack(self):
+
+        isBinary = True
+
+        message_o = self.textEdit_9.toPlainText()
+        if isBinary:
+            message = hexToBytes(message_o)
+        else:
+            message = strToBytes(message_o, isBinary)
+        print("message: ", message)
+
+        cipher_o = self.textEdit_10.toPlainText()
+        cipher = hexToBytes(cipher_o)
+        print("cipher: ", cipher)
+
+        time_start = time.time()
+        target = self.AES.mimAttach(message, cipher)
+        time_end = time.time()
+        print("time: ", time_end - time_start)
+        print("target: ", target)
+
+        result = "Plain: " + bytesToStr(message, isBinary) + " -- " + message_o + "\n"
+        result += "Cipher: " + bytesToStr(cipher, isBinary) + " -- " + cipher_o + "\n"
+
+        if isBinary:
+            result += "key: " + bytesToStr(target, isBinary) + " -- " + bytesToHex(target) + "\n"
+        else:
+            result += "key: " + bytesToStr(target, isBinary) + " -- " + bytesToStr(target, isBinary) + "\n"
+        result += "time: " + str(time_end - time_start) + " s"
+        self.textEdit_11.setPlainText(result)
+        self.textEdit_11.setEnabled(True)
+
+    def multiEncrypt(self):
+        isBinary = True
 
         if self.radioButton_3.isChecked():
             isBinary = True
@@ -282,95 +307,197 @@ class Ui_MainWindow(object):
         if self.radioButton_4.isChecked():
             isBinary = False
 
-        print(isBinary)
-        # 获取输入的明文
-        cipher_text = self.c2_textEdit_4.toPlainText()
-        key_text = self.k2_textEdit_5.toPlainText()
-        print("c: ", cipher_text)
-        c = strToBytes(cipher_text, isBinary)
-        key = strToBytes(key_text, isBinary)
+        message_o = self.textEdit_4.toPlainText()
+        if isBinary:
+            message = hexToBytes(message_o)
+        else:
+            message = strToBytes(message_o, isBinary)
+        print("message: ", message)
 
-        p = self.machine.forward(c, key, isEncrypt=False)
-        plainText = bytesToStr(p, isBinary)
-        print("plain: ", plainText)
+        key_o = self.textEdit_5.toPlainText()
+        key = hexToBytes(key_o)
+        print("key: ", key)
 
-        self.p2_textEdit_6.setPlainText(plainText)
-        self.p2_textEdit_6.setEnabled(True)
+        keyOrder_o = self.textEdit_6.toPlainText()
+        keyOrder = strToBytes(keyOrder_o, isBinary=True)
+        print("keyOrder: ", keyOrder)
 
-    def bf_text(self):
-        isBinary = None
+        strategies_o = self.textEdit_7.toPlainText()
+        strategies = strToBytes(strategies_o, isBinary=True)
+        print("strategies: ", strategies)
 
-        if self.radioButton_6.isChecked():
+        target = self.AES.control(message, key, "multi", True, keyOrder, strategies)
+        print("target: ", target)
+
+        result = "Plain: " + bytesToStr(message, isBinary) + " -- " + message_o + "\n"
+        result += "Key: " + bytesToStr(key, True) + " -- " + key_o + "\n"
+        result += "KeyOrder: " + str(keyOrder) + "\n"
+        result += "Strategies: " + str(strategies) + "\n"
+        if isBinary:
+            result += "Cipher: " + bytesToStr(target, isBinary) + " -- " + bytesToHex(target) + "\n"
+        else:
+            result += "Cipher: " + bytesToStr(target, isBinary) + " -- " + bytesToStr(target, isBinary) + "\n"
+        self.textEdit_8.setPlainText(result)
+        self.textEdit_8.setEnabled(True)
+
+    def multiDecrypt(self):
+        isBinary = True
+
+        if self.radioButton_3.isChecked():
             isBinary = True
 
-        if self.radioButton_5.isChecked():
+        if self.radioButton_4.isChecked():
             isBinary = False
-        # 获取输入的明文
-        print(isBinary)
-        plain_text = self.p3_textEdit_7.toPlainText()
-        cipher_text = self.c3_textEdit_8.toPlainText()
 
-        p = strToBytes(plain_text, isBinary)
-        c = strToBytes(cipher_text, isBinary)
+        message_o = self.textEdit_4.toPlainText()
+        if isBinary:
+            message = hexToBytes(message_o)
+        else:
+            message = strToBytes(message_o, isBinary)
+        print("message: ", message)
 
-        keys, time_spend = self.machine.bruteForce(p, c)
+        key_o = self.textEdit_5.toPlainText()
+        key = hexToBytes(key_o)
+        print("key: ", key)
 
-        text = ""
-        for key in keys:
-            text_key = bytesToStr(key, True)
-            text += text_key
-            text += "\n"
+        keyOrder_o = self.textEdit_6.toPlainText()
+        keyOrder = strToBytes(keyOrder_o, isBinary=True)
+        keyOrder = keyOrder[::-1]
+        print("keyOrder: ", keyOrder)
 
-        text += "time_spend: " + str(time_spend) + "ms"
-        self.k3_textEdit_9.setPlainText(text)
-        self.k3_textEdit_9.setEnabled(True)
+        strategies_o = self.textEdit_7.toPlainText()
+        strategies = strToBytes(strategies_o, isBinary=True)
+        strategies = (strategies ^ np.ones_like(strategies, dtype=np.uint8))[::-1]
+        print("strategies: ", strategies)
 
+        target = self.AES.control(message, key, "multi", False, keyOrder, strategies)
+        print("target: ", target)
 
-#################################################################################3
+        result = "Cipher: " + bytesToStr(message, isBinary) + " -- " + message_o + "\n"
+        result += "Key: " + bytesToStr(key, True) + " -- " + key_o + "\n"
+        result += "KeyOrder: " + str(keyOrder) + "\n"
+        result += "Strategies: " + str(strategies) + "\n"
+        if isBinary:
+            result += "Plain: " + bytesToStr(target, isBinary) + " -- " + bytesToHex(target) + "\n"
+        else:
+            result += "Plain: " + bytesToStr(target, isBinary) + " -- " + bytesToStr(target, isBinary) + "\n"
+        self.textEdit_8.setPlainText(result)
+        self.textEdit_8.setEnabled(True)
+
+    def encrypt(self):
+        isBinary = True
+
+        if self.radioButton.isChecked():
+            isBinary = True
+
+        if self.radioButton_2.isChecked():
+            isBinary = False
+
+        message_o = self.textEdit.toPlainText()
+        if isBinary:
+            message = hexToBytes(message_o)
+        else:
+            message = strToBytes(message_o, isBinary)
+        print("message: ", message)
+
+        key_o = self.textEdit_2.toPlainText()
+        key = hexToBytes(key_o)
+        print("key: ", key)
+
+        target = self.AES.control(message, key, mode="en")
+        print("target: ", target)
+
+        result = "Plain: " + bytesToStr(message, isBinary) + " -- " + message_o + "\n"
+        result += "Key: " + bytesToStr(key, True) + " -- " + key_o + "\n"
+        if isBinary:
+            result += "Cipher: " + bytesToStr(target, isBinary) + " -- " + bytesToHex(target) + "\n"
+        else:
+            result += "Cipher: " + bytesToStr(target, isBinary) + " -- " + bytesToStr(target, isBinary) + "\n"
+        self.textEdit_3.setPlainText(result)
+        self.textEdit_3.setEnabled(True)
+
+    def decrypt(self):
+        isBinary = True
+        if self.radioButton.isChecked():
+            isBinary = True
+
+        if self.radioButton_2.isChecked():
+            isBinary = False
+
+        message_o = self.textEdit.toPlainText()
+        if isBinary:
+            message = hexToBytes(message_o)
+        else:
+            message = strToBytes(message_o, isBinary)
+        print("message: ", message)
+
+        key_o = self.textEdit_2.toPlainText()
+        key = hexToBytes(key_o)
+        print("key: ", key)
+
+        target = self.AES.control(message, key, mode="de")
+        print("target: ", target)
+
+        result = "Cipher: " + bytesToStr(message, isBinary) + " -- " + message_o + "\n"
+        result += "Key: " + bytesToStr(key, True) + " -- " + key_o + "\n"
+        if isBinary:
+            result += "Plain: " + bytesToStr(target, isBinary) + " -- " + bytesToHex(target) + "\n"
+        else:
+            result += "Plain: " + bytesToStr(target) + " -- " + bytesToStr(target, isBinary) + "\n"
+        self.textEdit_3.setPlainText(result)
+        self.textEdit_3.setEnabled(True)
 
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Simple-DES"))
-        MainWindow.setWindowIcon(QtGui.QIcon("./favicon.ico"))
-        self.p1_label.setText(_translate("MainWindow", "PlainText："))
-        self.key1_label_2.setText(_translate("MainWindow", "Key："))
-        self.k1_textEdit_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\'; font-size:9pt;\"><br /></p></body></html>"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label.setText(_translate("MainWindow",
+                                      "<html><head/><body><p><span style=\" font-size:16pt;\">明文/密文：</span></p></body></html>"))
+        self.label_4.setText(_translate("MainWindow",
+                                        "<html><head/><body><p><span style=\" font-size:16pt;\">Key：</span></p></body></html>"))
+        self.label_5.setText(_translate("MainWindow",
+                                        "<html><head/><body><p><span style=\" font-size:16pt;\">Result：</span></p></body></html>"))
+        self.pushButton.setText(_translate("MainWindow", "加密"))
+        self.pushButton_2.setText(_translate("MainWindow", "解密"))
         self.radioButton.setText(_translate("MainWindow", "比特串"))
         self.radioButton_2.setText(_translate("MainWindow", "字符串"))
-        self.c1_label_3.setText(_translate("MainWindow", "CipherText:"))
-        self.e_pushButton.setText(_translate("MainWindow", "Encrypt"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "加密"))
-        self.label_6.setText(_translate("MainWindow", "CipherText："))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "加解密"))
+        self.label_6.setText(_translate("MainWindow",
+                                        "<html><head/><body><p><span style=\" font-size:16pt;\">明密文：</span></p></body></html>"))
+        self.label_7.setText(_translate("MainWindow",
+                                        "<html><head/><body><p><span style=\" font-size:16pt;\">Key：</span></p></body></html>"))
+        self.label_10.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">KeyOrder：</span></p></body></html>"))
+        self.label_11.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">Strategy：</span></p></body></html>"))
+        self.label_12.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">Result：</span></p></body></html>"))
+        self.pushButton_3.setText(_translate("MainWindow", "加密"))
+        self.pushButton_4.setText(_translate("MainWindow", "解密"))
         self.radioButton_3.setText(_translate("MainWindow", "比特串"))
-        self.label_5.setText(_translate("MainWindow", "Key："))
-        self.d_pushButton_2.setText(_translate("MainWindow", "Decrypt"))
         self.radioButton_4.setText(_translate("MainWindow", "字符串"))
-        self.k2_textEdit_5.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\'; font-size:9pt;\"><br /></p></body></html>"))
-        self.label_4.setText(_translate("MainWindow", "PlainText："))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "解密"))
-        self.label_7.setText(_translate("MainWindow", "CipherText："))
-        self.label_9.setText(_translate("MainWindow", "PlainText："))
-        self.radioButton_5.setText(_translate("MainWindow", "字符串"))
-        self.radioButton_6.setText(_translate("MainWindow", "比特串"))
-        self.bf_pushButton_3.setText(_translate("MainWindow", "Brute Force"))
-        self.label_8.setText(_translate("MainWindow", "Key："))
-        self.k3_textEdit_9.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\'; font-size:9pt;\"><br /></p></body></html>"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "破解"))
-
-
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "多重加密"))
+        self.pushButton_5.setText(_translate("MainWindow", "攻击"))
+        self.label_13.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">明文：</span></p></body></html>"))
+        self.label_14.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">密文：</span></p></body></html>"))
+        self.label_15.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">Key：</span></p></body></html>"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "中间相遇攻击"))
+        self.label_16.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">明密文：</span></p></body></html>"))
+        self.label_19.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">Ⅳ：</span></p></body></html>"))
+        self.label_20.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">Key：</span></p></body></html>"))
+        self.label_21.setText(_translate("MainWindow",
+                                         "<html><head/><body><p><span style=\" font-size:16pt;\">Result：</span></p></body></html>"))
+        self.pushButton_6.setText(_translate("MainWindow", "加密"))
+        self.pushButton_7.setText(_translate("MainWindow", "解密"))
+        self.radioButton_5.setText(_translate("MainWindow", "比特串"))
+        self.radioButton_6.setText(_translate("MainWindow", "字符串"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "cbc"))
 
 
 if __name__ == "__main__":

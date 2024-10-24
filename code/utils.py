@@ -1,22 +1,6 @@
 import numpy as np
 
 
-def split(input):
-    length = input.shape[0]
-    mid = length // 2
-    return input[:mid], input[mid:]
-
-
-def swap(left, right):
-    return right, left
-
-
-def merge(left, right):
-    result = left
-    result = np.append(result, right)
-    return result
-
-
 def binToDec(input):
     binary_string = ''.join(np.array(input).astype(str))
 
@@ -25,7 +9,7 @@ def binToDec(input):
     return decimal_value
 
 
-def decToBin(input, isInt8=True):   # 返回一个字节 --- 8bit
+def decToBin(input, isInt8=True):  # 返回一个字节 --- 8bit
     if isInt8:
         t = np.array(input, dtype=np.uint8)
         binary_array = np.unpackbits(t)
@@ -43,7 +27,6 @@ def decToBin(input, isInt8=True):   # 返回一个字节 --- 8bit
         # 将低字节和高字节的二进制数组合并为一个数组
         binary_array = np.concatenate((high_bits, low_bits))
         return binary_array
-
 
 
 def strToBytes(strings, isBinary=True):
@@ -71,7 +54,26 @@ def bytesToStr(binary_array, isBinary=True):
     return string_result
 
 
+def hexToBytes(hex_string):
+    result = np.array([], dtype=np.uint8)
+    for x in hex_string:
+        if ord(x) >= 65:
+            result = np.append(result, decToBin(ord(x) - 55)[-4:])
+        else:
+            result = np.append(result, decToBin(ord(x) - 48)[-4:])
+    return result
 
+
+def bytesToHex(byte_array):
+    result = ''
+    for i in range(0, len(byte_array), 4):
+        t = binToDec(byte_array[i:i + 4])
+        if t < 10:
+            result += chr(t + 48)
+        else:
+            result += chr(t + 55)
+
+    return result
 
 
 if __name__ == '__main__':
@@ -84,5 +86,9 @@ if __name__ == '__main__':
     # a = [1,1]
     # print(binToDec(a))
 
-    a = 37390
-    print(decToBin(a, isInt8=False))
+    t = 0
+    print(decToBin(t, False))
+
+    # v = bytesToHex(a)
+    # print(v)
+    # print(binToDec([1, 0, 1, 0]))

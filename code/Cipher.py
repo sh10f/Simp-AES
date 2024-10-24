@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 
-from utils import split, swap, merge, decToBin, binToDec, strToBytes, bytesToStr
+from utils import decToBin, binToDec, strToBytes, bytesToStr
 
 
 class SBox:
@@ -290,7 +290,7 @@ class S_AES:
         # strategies= [[0, 1]]  # attack strategy
         strategies= [[0, 1], [1, 0], [1, 1], [0 ,0] ]  # attack strategy
 
-        keys = {}
+        keys = np.array([], dtype=np.uint8)
         for strategy in strategies:
             for i in range(2 ** 16):
                 k = decToBin(i, isInt8=False)   # (16, )
@@ -309,8 +309,9 @@ class S_AES:
                     mid_left = np.array(mid_left, dtype=np.uint8)
                     mid_right = np.array(mid_right, dtype=np.uint8)
                     if np.sum(mid_left == mid_right) == len(mid_right):
-                        keys[binToDec(strategy)] = [i, j]
-                        return keys[binToDec(strategy)]
+                        keys = np.append(keys, decToBin(i, isInt8=False))
+                        keys = np.append(keys, decToBin(j, isInt8=False))
+                        return keys
 
 
 
@@ -352,6 +353,37 @@ class S_AES:
 
 
 if __name__ == '__main__':
+    ############  加解密 ######################
+    a = "efbt"
+    input = strToBytes(a, isBinary=False)
+    print("input: \n", input)
+    key = np.array([[0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0]
+                    ], dtype=np.uint8).T
+    key = key.T.reshape(-1,)
+    print("key:, ", key, key.shape)
+
+    IV = 52
+    IV = decToBin(IV, isInt8=False)
+    print("IV: ", IV)
+
+
+
+    sAES = S_AES()
+    # a = sAES.multi(input, key, keyOrder, strategy)
+    a = sAES.cbc(input, IV, key, isForward=True)
+    # print("a: \n", a.reshape(-1, 8))
+
+    b = sAES.cbc(a, IV, key, isForward=False)
+    print("cipher: \n", b, b.shape)
+
+    print("true? \n", b == input)
+
+    print(bytesToStr(a, isBinary=False))
+
+
+
+
     # # input = np.array([1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1], dtype=np.uint8)
     # # input = np.array([[1, 0, 1, 0, 0, 1, 1, 1],
     # #                   [0, 1, 0, 0, 1, 0, 0, 1]], dtype=np.uint8).T
@@ -395,7 +427,7 @@ if __name__ == '__main__':
     # input = np.array([[1, 0, 1, 0, 0, 1, 1, 1],
     #                   [0, 1, 0, 0, 1, 0, 0, 1]], dtype=np.uint8).T
 
-    a = "abcdef"
+    a = "ef"
     input = strToBytes(a, isBinary=False)
     print("input: \n", input)
     key = np.array([[0, 0, 0, 0, 0, 0, 0, 0],
@@ -404,7 +436,7 @@ if __name__ == '__main__':
     key = key.T.reshape(-1,)
     print("key:, ", key, key.shape)
 
-    IV = 500
+    IV = 52
     IV = decToBin(IV, isInt8=False)
     print("IV: ", IV)
 
@@ -412,12 +444,14 @@ if __name__ == '__main__':
 
     sAES = S_AES()
     # a = sAES.multi(input, key, keyOrder, strategy)
-    a = sAES.cbc(input, IV, key, isForward=True)
+    a = sAES.control(input, key)
     # print("a: \n", a.reshape(-1, 8))
 
-    b = sAES.cbc(a, IV, key, isForward=False)
+    b = sAES.control(input, key, "de")
     print("cipher: \n", b, b.shape)
 
     print("true? \n", b == input)
+
+    print(bytesToStr(a, isBinary=False))
 
 
